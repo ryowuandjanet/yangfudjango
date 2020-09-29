@@ -222,7 +222,7 @@
           {% endif %}
           <hr>
           {% if objectbuild.plusItemA1 != None or objectbuild.plusItemA2 != None or objectbuild.plusItemA3 != None or objectbuild.plusItemA4 != None or objectbuild.plusItemA5 != None or objectbuild.plusItemOtherA != None %}
-            <h5 style="text-align: left;">計算加成係數(相乘後)：{{objectbuild.get_a_plus_value_total|floatformat:0|intcomma}}</h5>
+            <h5 style="text-align: left;vertical-align: bottom;">計算加成係數(相乘後)：{{objectbuild.get_a_plus_value_total|floatformat:0|intcomma}}</h5>
           {% endif %}
         </td>
         <td colspan="3" rowspan="8" style="vertical-align: top;">
