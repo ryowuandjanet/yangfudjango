@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'NotoSansTCMedium';
+  src: local('NotoSansTCMedium'),
+    url('../fonts/NotoSansTCMedium.otf') format("opentype");
+}
+
+@font-face {
+  font-family: 'RobotoMedium';
+  src: local('RobotoMedium'),
+    url('../fonts/RobotoMedium.ttf') format("truetype");
+}
+

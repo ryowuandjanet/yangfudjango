@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+  <h2>Sign up</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-success" type="submit" onclick="post_request_fullname_submit()">Sign up</button>
+  </form>
+{% endblock %}
+
+{% block javascript %}
+<script>
+  function post_request_fullname_submit() {
+    const signup_fullname = document.getElementById('id_first_name').value +document.getElementById('id_last_name').value
+    document.getElementById('id_fullname').value = signup_fullname
+  }
+</script>
+{% endblock javascript %}

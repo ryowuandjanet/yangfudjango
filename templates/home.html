@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load urlify %}
+{% block style %}
+
+{% endblock style %}
+{% block content %}
+
+  <h1>案件清單</h1>
+
+  <table class="table table-hover">
+    <thead class="bg-info text-light">
+      <tr>
+        <th scope="col" style="text-align: center;vertical-align: middle;">操作</th>
+        <th scope="col" style="text-align: center;vertical-align: middle;">案號</th>
+        <th scope="col" style="text-align: center;vertical-align: middle;">兩週內判定<br>提醒</th>
+        <th style="text-align: center;vertical-align: middle;">負責人</th>
+        <th style="text-align: center;vertical-align: middle;">最終判定</th>
+        <th style="text-align: center;vertical-align: middle;">執行結果</th>
+        <th style="text-align: center;vertical-align: middle;">優購結果</th>
+        <th style="text-align: center;vertical-align: middle;">標的編號</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for yfcase in object_list %}
+        <tr>
+          <th scope="row" style="padding: 0px;text-align: center;vertical-align: middle;">
+            <a href="javascript:void(0)" onclick="yfcase_modal_delete('{% url 'yfcase:yfcase_delete' yfcase.id %}')" class="btn btn-outline-danger btn-sm delete-btn">
+              <i class="fas fa-trash-alt fa-lg"></i>
+            </a>
+          </th>
+          <td>
+            <a href="{% url 'yfcase:yfcase_detail' yfcase.id %}">{{yfcase.yfcaseCaseNumber}}</a>
+            <br>
+            &emsp;&#10149;{{yfcase.yfcaseCity|default_if_none:""}}{{yfcase.yfcaseTownship|default_if_none:""}}{{yfcase.yfcaseBigSection|default_if_none:""}}{{yfcase.yfcaseSmallSectiion|default_if_none:""}}{{yfcase.yfcaseOtherAddress|default_if_none:""}}
+          </td>
+          <td>
+            {% if yfcase.finaldecisions.first and yfcase.auctions.first and yfcase.two_weeks >= 0 and yfcase.two_weeks <= 14 %}
+              兩週內(<span style="color:red;">{{ yfcase.two_weeks }}</span>)
+            {% endif %}
+          </td>
+          <td>
+            {{ yfcase.user.fullname }}
+          </td>
+          <td>
+            {% for finaldecision in yfcase.finaldecisions.all %}
+              {{ finaldecision.finalDecision }}
+            {% endfor %}
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="post-entry">
+      
+  </div>
+
+  <div class="modal fade" id="deleteYfcaseModal" role="dialog"></div>
+ 
+{% endblock content %}
+
+{% block javascript %}
+  <script>
+    function yfcase_modal_delete(url) {
+      $('#deleteYfcaseModal').load(url,function() {
+        $(this).modal('show')
+      })
+    }
+  </script>
+{% endblock javascript %}
+

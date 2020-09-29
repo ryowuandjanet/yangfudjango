@@ -1,0 +1,29 @@
+https://kevintsengtw.blogspot.com/2012/05/jquery_29.html
+
+
+http://jsfiddle.net/7bA8M/
+
+https://blog.darkthread.net/blog/angular-notes-29/
+
+
+  def get_score_plus__rate_avergae_calculation(self):
+    score_rate_average=0
+    # A+B+0
+    if self.objectBuildScorerA != None and self.objectBuildScorerB != None :
+      score_rate_average = (self.get_a_plus_value()+self.get_b_plus_value()) / 2
+    # A+0+0
+    elif self.objectBuildScorerA != None:
+      score_rate_average = self.get_a_plus_value()
+    # 0+B+0
+    elif self.objectBuildScorerB != None:
+      score_rate_average = self.get_b_plus_value()
+    # 0+0+0
+    else:
+      score_rate_average = 1
+    return score_rate_average
+
+{% if request.user.fullname == objectbuild.objectBuildScorerB or request.user.fullname == objectbuild.objectBuildScorerC %}
+              <div style="color:brown;">該員已評</div>
+          {% else %}
+            {{objectbuild.objectBuildScorerA|default_if_none:"" }}
+          {% endif %}
