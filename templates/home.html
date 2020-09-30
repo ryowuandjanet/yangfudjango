@@ -3,9 +3,8 @@
 {% block style %}
 <style>
   .y20000{
-    border:2px solid pink;
+    border:2px solid black;
     border-radius:10px;
-    background-color: red;
     color:white;
     width:35px;
     height:35px;
@@ -13,26 +12,110 @@
     margin: 0px;
     text-align: center;
     vertical-align: middle;
-    font-weight:bold;
+    /*font-weight:bold;*/
     font-size: 14pt;
     font-width: bold;
+  }
+
+  .hometable th {
+    border:1px solid grey;
+    padding:2px;
+  }
+  .hometable td {
+    border:1px solid lightgrey;
+    padding:3px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .homeItem td{
+    border:none;
+    padding: 0px 5px;
+  }
+  .btn-group {
+    padding-right:10px;
   }
 </style>
 {% endblock style %}
 {% block content %}
 
-  <h1>案件清單</h1>
+  <h1 style="text-align: center;">案件清單</h1>
+  <div style="margin-bottom:3px;">
 
-  <table class="table table-hover">
-    <thead class="bg-info text-light">
-      <tr>
+  <table class="filtertable">
+    <tr>
+      <td>
+        <h3 style="padding-right:5px;">篩選條件：</h3>
+      </td>
+      <td style="vertical-align: middle;padding-top: 0px;">
+        <!-- 案號 -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            案號
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
+          </div>
+        </div>
+
+        <!-- 最終判定 -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            最終判定
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
+          </div>
+        </div>
+
+        <!-- 縣市 -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            縣市
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
+          </div>
+        </div>
+
+        <!-- 人員 -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            人員
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <table class="table table-hover hometable">
+    <thead style="background-color: darkblue;color:white;">
+      <tr >
         <th scope="col" style="text-align: center;vertical-align: middle;width:5%;">操作</th>
         <th scope="col" style="text-align: center;vertical-align: middle;width:30%;">案號</th>
-        <th scope="col" style="text-align: center;vertical-align: middle;width:10%;">兩週內<br>提醒</th>
-        <th style="text-align: center;vertical-align: middle;width:10%;">負責人</th>
-        <th style="text-align: center;vertical-align: middle;width:12%;" colspan="2">最終判定</th>
+        <th scope="col" style="text-align: center;vertical-align: middle;width:7%;">兩週內<br>提醒</th>
+        <th style="text-align: center;vertical-align: middle;width:6%;">負責人</th>
+        <th style="text-align: center;vertical-align: middle;" colspan="2">最終判定</th>
         <th style="text-align: center;vertical-align: middle;width:10%;">執行結果</th>
-        <th style="text-align: center;vertical-align: middle;width:10%;">優購結果</th>
+        <th style="text-align: center;vertical-align: middle;width:10%;" colspan="2">優購結果</th>
         <th style="text-align: center;vertical-align: middle;">標的編號</th>
       </tr>
     </thead>
@@ -40,14 +123,14 @@
     <tbody>
       {% for yfcase in object_list %}
         <tr>
-          <th scope="row" style="padding: 0px;text-align: center;vertical-align: middle;">
+          <td scope="row" style="padding: 0px;text-align: center;vertical-align: middle;">
             {% if request.user.fullname == "管理者" %}
               <a href="javascript:void(0)" onclick="yfcase_modal_delete('{% url 'yfcase:yfcase_delete' yfcase.id %}')" class="btn btn-outline-danger btn-sm delete-btn">
                 <i class="fas fa-trash-alt fa-lg"></i>
               </a>
             {% endif %}
-          </th>
-          <td>
+          </td>
+          <td style="text-align: left;">
             <a href="{% url 'yfcase:yfcase_detail' yfcase.id %}">{{yfcase.yfcaseCaseNumber}}</a>
             <br>
             &emsp;&#10149;{{yfcase.yfcaseCity|default_if_none:""}}{{yfcase.yfcaseTownship|default_if_none:""}}{{yfcase.yfcaseBigSection|default_if_none:""}}{{yfcase.yfcaseSmallSectiion|default_if_none:""}}{{yfcase.yfcaseOtherAddress|default_if_none:""}}
@@ -60,17 +143,31 @@
           <td>
             {{ yfcase.user.fullname }}
           </td>
-          <td>
+          <td style="width:6%;border-right:none;">
             {% for finaldecision in yfcase.finaldecisions.all %}
               {{ finaldecision.finalDecision }}
             {% endfor %}
           </td>
-          <td>
-            <div class="y20000">評</div>
+          <td style="width:3%;border-left:none;">
+            <div class="y20000" style="border-color:lightblue;background-color: blue;">評</div>
           </td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td style="width:7%;">第三人搶標</td>
+          <td style="width:6%;">
+            無人優購
+          </td>
+          <td style="width:10%;">
+            <table class="homeItem">
+              <tr>
+                <td><div class="y20000" style="border-color:lightpink;background-color: red;">契</div></td>
+                <td><div class="y20000" style="border-color:lightgreen;background-color: green;">動</div></td>
+                <td><div class="y20000" style="border-color:grey;background-color: black;">狀</div></td>
+                <td><div class="y20000" style="border-color:mediumpurple;background-color: indigo;">函</div></td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            KH001
+          </td>
         </tr>
       {% endfor %}
     </tbody>
