@@ -8,11 +8,39 @@ from django.urls import reverse_lazy,reverse
 from django.db.models import Avg
 from .models import *
 from .forms import *
+from .filters import YfcaseFilter
+
+# https://spapas.github.io/2018/03/19/comprehensive-django-cbv-guide/
+class AddFilterMixin:
+  filter_class = None
+
+  def get_context_data(self, **kwargs):
+    ctx = super().get_context_data(**kwargs)
+    if not self.filter_class:
+        raise NotImplementedError("Please define filter_class when using AddFilterMixin")
+    myFilter = self.filter_class(self.request.GET, queryset=self.get_queryset())
+    ctx['myFilter'] = myFilter
+    if self.context_object_name:
+        ctx[self.context_object_name] = myFilter.qs
+    return ctx
 
 @method_decorator(login_required,name='dispatch')
-class YfcaseListView(ListView):
+class YfcaseListView(AddFilterMixin,ListView):
   model=Yfcase
   template_name="home.html"
+  filter_class = YfcaseFilter
+
+  # def get(self, request, *args, **kwargs):
+  #   queryset_filter = YfcaseFilter(request.GET, queryset=Yfcase.objects.all())
+  #   myFilter = queryset_filter.qs
+  #   context = self.get_context_data()
+  #   return self.render_to_response(context)
+
+  # def get_context_data(self, *args, **kwargs):
+  #   context = super(YfcaseListView,self).get_context_data(**kwargs)
+  #   context['myFilter'] = myFilter
+  #   return context
+
 
 @method_decorator(login_required,name='dispatch')
 class YfcaseDetailView(DetailView):
