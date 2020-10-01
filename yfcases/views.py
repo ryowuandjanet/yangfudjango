@@ -11,21 +11,23 @@ from .forms import *
 from .filters import YfcaseFilter
 
 # https://spapas.github.io/2018/03/19/comprehensive-django-cbv-guide/
-class AddFilterMixin:
-  filter_class = None
+# class AddFilterMixin:
+#   filter_class = None
 
-  def get_context_data(self, **kwargs):
-    ctx = super().get_context_data(**kwargs)
-    if not self.filter_class:
-        raise NotImplementedError("Please define filter_class when using AddFilterMixin")
-    myFilter = self.filter_class(self.request.GET, queryset=self.get_queryset())
-    ctx['myFilter'] = myFilter
-    if self.context_object_name:
-        ctx[self.context_object_name] = myFilter.qs
-    return ctx
+#   def get_context_data(self, **kwargs):
+#     ctx = super().get_context_data(**kwargs)
+#     if not self.filter_class:
+#         raise NotImplementedError("Please define filter_class when using AddFilterMixin")
+#     myFilter = self.filter_class(self.request.GET, queryset=Yfcase.objects.all())
+    
+#     ctx['myFilter'] = myFilter
+#     if self.context_object_name:
+#         ctx[self.context_object_name] = myFilter.qs
+#     return ctx
+
 
 @method_decorator(login_required,name='dispatch')
-class YfcaseListView(AddFilterMixin,ListView):
+class YfcaseListView(ListView):
   model=Yfcase
   template_name="home.html"
   filter_class = YfcaseFilter
@@ -35,11 +37,18 @@ class YfcaseListView(AddFilterMixin,ListView):
   #   myFilter = queryset_filter.qs
   #   context = self.get_context_data()
   #   return self.render_to_response(context)
+  def get_queryset(self):
+    return Yfcase.objects.all()
 
-  # def get_context_data(self, *args, **kwargs):
-  #   context = super(YfcaseListView,self).get_context_data(**kwargs)
-  #   context['myFilter'] = myFilter
-  #   return context
+  def get_context_data(self, *args, **kwargs):
+    context = super(YfcaseListView,self).get_context_data(**kwargs)
+    myFilter = self.filter_class(self.request.GET, queryset=self.get_queryset())
+    object_list = myFilter.qs
+    context['myFilter'] = myFilter
+    context['object_list'] = object_list
+    # if self.context_object_name:
+    #   context[self.context_object_name] = myFilter.qs
+    return context
 
 
 @method_decorator(login_required,name='dispatch')

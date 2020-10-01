@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 {% load urlify %}
 {% block style %}
 <style>
@@ -41,75 +42,64 @@
   <h1 style="text-align: center;">案件清單</h1>
   <div style="margin-bottom:3px;">
 
+
+  
+
+
   <form method="get">
-    {{myFilter.form}}
-    <button type="submit" class="btn btn-primary">Search</button>
+    <div class="row">
+      <div style="padding-left:15px;padding-right:0px;margin-right:0px;">
+        <h3 style="padding-right:5px;">篩選條件：</h3>
+      </div>
+      <div class="col-sm-2" style="padding-left:0px;">
+        <!-- 案號篩選欄位 -->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text bg-primary text-white" id="inputGroup-sizing-default" style="border:1px solid black;">{{myFilter.form.yfcaseCaseNumber.label}}</span>
+          </div>
+          {% render_field myFilter.form.yfcaseCaseNumber type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="border:1px solid black;" %}
+        </div>
+      </div>
+
+      <div class="col-sm-2" style="padding-left:0px;">
+        <!-- 縣市篩選欄位 -->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend" >
+            <label class="input-group-text bg-success text-white" for="id_yfcaseCity" style="border:1px solid black;">{{myFilter.form.yfcaseCity.label}}</label>
+          </div>
+          {% render_field myFilter.form.yfcaseCity class="custom-select" style="border:1px solid black;" %}
+        </div>
+      </div>
+
+      <div class="col-sm-2" style="padding-left:0px;">
+        <!-- 人員篩選欄位 -->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend" >
+            <label class="input-group-text bg-info text-white" for="id_yfcaseCity" style="border:1px solid black;">{{myFilter.form.user.label}}</label>
+          </div>
+          {% render_field myFilter.form.user class="custom-select" style="border:1px solid black;" %}
+        </div>
+      </div>
+
+      <div class="col-sm-2" style="padding-left:0px;">
+        <!-- 最終判定篩選欄位 -->
+        <div class="input-group mb-3">
+          <div class="input-group-prepend" >
+            <label class="input-group-text bg-warning text-white" for="id_yfcaseCity" style="border:1px solid black;">{{myFilter.form.yfcaseFinalDecision.label}}</label>
+          </div>
+          {% render_field myFilter.form.yfcaseFinalDecision class="custom-select" style="border:1px solid black;" %}
+        </div>
+      </div>
+
+      <div class="col-sm-2" style="padding-left:0px;">
+        <button type="submit" class="btn btn-primary" style="background-color: brown; border:1px solid chocolate;">篩選</button>
+        <input type ="button"  class="btn btn-primary class_on_first_link" style="background-color: dimgrey; border:1px solid lightgrey;" value="取消篩選"></input>
+
+      </div>
+
+    </div>
   </form>
 
-  <table class="filtertable">
-    <tr>
-      <td>
-        <h3 style="padding-right:5px;">篩選條件：</h3>
-      </td>
-      <td style="vertical-align: middle;padding-top: 0px;">
-        <!-- 案號 -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            案號
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div>
-
-        <!-- 最終判定 -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            最終判定
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div>
-
-        <!-- 縣市 -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            縣市
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div>
-
-        <!-- 人員 -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            人員
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </div>
-      </td>
-    </tr>
-  </table>
 
   <table class="table table-hover hometable">
     <thead style="background-color: darkblue;color:white;">
@@ -187,10 +177,20 @@
 
 {% block javascript %}
   <script>
+    $(function() {
+      $('.class_on_first_link').click(function(){
+        window.location = window.location.protocol + '//' + window.location.hostname + ':3000';
+      });
+    });
+    
     function yfcase_modal_delete(url) {
       $('#deleteYfcaseModal').load(url,function() {
         $(this).modal('show')
       })
+    }
+
+    function gohome(){
+      window.location.hostname
     }
   </script>
 {% endblock javascript %}

@@ -36,7 +36,7 @@ class Yfcase(models.Model):
   yfcaseOtherAddress=models.CharField(u'其他住址',max_length=100,null=True,blank=True)
   yfcaseDebtor=models.CharField(u'債務人',max_length=10,null=True,blank=True)
   yfcaseCreditor=models.CharField(u'債權人',max_length=10,null=True,blank=True)
-  user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
+  user = models.ForeignKey('users.CustomUser',verbose_name = u'區域負責人', on_delete=models.CASCADE)
 
   def __str__(self):
     return self.yfcaseCaseNumber
@@ -632,6 +632,9 @@ class FinalDecision(models.Model):
   regionalHeadDate = models.CharField(u'簽核日期',max_length=10,null=True,blank=True)
   subSigntrueDateA = models.CharField(u'簽核日期',max_length=10,null=True,blank=True)
   subSigntrueDateB = models.CharField(u'簽核日期',max_length=10,null=True,blank=True)
+
+  def __str__(self):
+    return self.finalDecision
 
   def other_day_to_today(self):
     # 取得目前的日期，要用form dateteim import datetime,不可用import datetime
